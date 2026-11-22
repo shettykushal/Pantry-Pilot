@@ -1,0 +1,8 @@
+import {z} from 'zod';
+export const pantryItem=z.object({id:z.string(),name:z.string().min(1).max(90),quantity:z.string().max(60),expiry:z.string().optional(),leftover:z.boolean().default(false),source:z.enum(['manual','vision']).default('manual')});
+export const preferences=z.object({diet:z.string().max(100).default('Any'),allergies:z.string().max(200).default('None'),equipment:z.string().max(200).default('Stove, pan'),skill:z.string().max(50).default('Beginner'),servings:z.number().int().min(1).max(12).default(1),budget:z.number().min(0).max(10000).default(100),time:z.number().min(5).max(240).default(30)});
+export const recipe=z.object({title:z.string(),description:z.string(),minutes:z.number(),servings:z.number(),difficulty:z.string(),estimatedCostINR:z.number(),ingredients:z.array(z.object({name:z.string(),amount:z.string(),available:z.boolean()})),steps:z.array(z.string()),substitutions:z.array(z.string()),tip:z.string()});
+export type PantryItem=z.infer<typeof pantryItem>;export type Preferences=z.infer<typeof preferences>;export type Recipe=z.infer<typeof recipe>;
+export const recipeResult=z.object({recipes:z.array(recipe).min(1).max(3)});
+export const scanResult=z.object({items:z.array(z.object({name:z.string(),quantity:z.string(),confidence:z.number().min(0).max(1),observation:z.string()})).max(40),notes:z.string()});
+export const mealPlan=z.object({meals:z.array(z.object({meal:z.string(),title:z.string(),reason:z.string(),minutes:z.number(),estimatedCostINR:z.number(),ingredients:z.array(z.string())})).min(1).max(9),shoppingList:z.array(z.string()),wasteSavingTip:z.string()});
